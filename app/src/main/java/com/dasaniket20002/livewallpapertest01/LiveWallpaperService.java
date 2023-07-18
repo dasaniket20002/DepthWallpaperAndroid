@@ -1,16 +1,19 @@
 package com.dasaniket20002.livewallpapertest01;
 
+import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
-import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Handler;
 import android.service.wallpaper.WallpaperService;
-import android.view.MotionEvent;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.SurfaceHolder;
+import android.view.WindowManager;
 
 public class LiveWallpaperService extends WallpaperService {
     static int mWallpaperWidth;
@@ -42,19 +45,35 @@ public class LiveWallpaperService extends WallpaperService {
     }
 
     void setSceneBackground() {
-        Bitmap b = BitmapFactory.decodeResource(getResources(),
-                R.drawable.bg);
-
         if (null != mSceneBitmap)
             mSceneBitmap.recycle();
 
-        Matrix m = new Matrix();
-        m.setScale((float) mWallpaperWidth / (float) b.getWidth(),
-                (float) mWallpaperHeight / (float) b.getHeight());
-        mSceneBitmap = Bitmap.createBitmap(b, 0, 0,
-                b.getWidth(), b.getHeight(), m, true);
+        Bitmap originalMap = BitmapFactory.decodeResource(getResources(),
+                R.drawable.bg);
 
-        b.recycle();
+        mSceneBitmap = getScreenSizeBitmap(originalMap);
+
+        originalMap.recycle();
+    }
+
+    private Bitmap getScreenSizeBitmap(Bitmap originalMap) {
+        DisplayMetrics metrics = new DisplayMetrics();
+        ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
+                .getDefaultDisplay().getMetrics(metrics);
+        int screenHeight = metrics.heightPixels;
+        int screenWidth = metrics.widthPixels;
+
+        int outHeight = screenHeight;
+        int outWidth = (originalMap.getWidth() * screenHeight) / originalMap.getHeight();
+
+        Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalMap, outWidth, outHeight, false);
+
+        int overflowWidth = outWidth - screenWidth;
+
+        Bitmap returnImg = Bitmap.createBitmap(resizedBitmap, overflowWidth / 2, 0, outWidth - overflowWidth / 2, outHeight);
+
+        resizedBitmap.recycle();
+        return returnImg;
     }
 
     class MyEngine extends Engine {
