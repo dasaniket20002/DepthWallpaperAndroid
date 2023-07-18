@@ -22,9 +22,9 @@ import java.util.Calendar;
 
 public class LiveWallpaperService extends WallpaperService {
     private static int SCREEN_WIDTH, SCREEN_HEIGHT;
-    private static final int TIME_FONT_SIZE = 200;
+    private static final int TIME_FONT_SIZE = 230;
 
-    private static final int TEXT_HEIGHT_OFFSET = 420;
+    private static final int TEXT_HEIGHT_OFFSET = 440;
     private Bitmap bgBitmap = null;
     private Bitmap fgBitmap = null;
     @Override
@@ -161,8 +161,11 @@ public class LiveWallpaperService extends WallpaperService {
                     String hh = String.format("%02d", h);
                     String mm = String.format("%02d", m);
 
-                    c.drawText(hh, SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - TEXT_HEIGHT_OFFSET, textPaintGraphics);
-                    c.drawText(mm, SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - TEXT_HEIGHT_OFFSET + TIME_FONT_SIZE, textPaintGraphics);
+                    float drawX = SCREEN_WIDTH / 2.0f;
+                    float drawY = SCREEN_HEIGHT / 2.0f - TEXT_HEIGHT_OFFSET;
+
+                    c.drawText(hh, drawX, drawY, textPaintGraphics);
+                    c.drawText(mm, drawX, drawY + TIME_FONT_SIZE, textPaintGraphics);
 
                     Log.d("TIME", hh + ":" + mm);
 
