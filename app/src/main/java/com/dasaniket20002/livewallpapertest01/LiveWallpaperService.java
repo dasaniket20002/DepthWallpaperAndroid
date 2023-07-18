@@ -22,7 +22,7 @@ import java.util.Calendar;
 
 public class LiveWallpaperService extends WallpaperService {
     private static int SCREEN_WIDTH, SCREEN_HEIGHT;
-    private static final int TIME_FONTSIZE = 200;
+    private static final int TIME_FONT_SIZE = 200;
     private Bitmap bgBitmap = null;
     private Bitmap fgBitmap = null;
     @Override
@@ -42,19 +42,15 @@ public class LiveWallpaperService extends WallpaperService {
 
     class MyEngine extends Engine {
         private final Handler mHandler = new Handler(Looper.getMainLooper());
-        private final Runnable mDrawThread = new Runnable() {
-            public void run() {
-                drawFrame();
-            }
-        };
+        private final Runnable mDrawThread = () -> drawFrame();
         private boolean mVisible;
-        private Paint textPaintGraphics;
+        private final Paint textPaintGraphics;
 
         MyEngine() {
             textPaintGraphics = new Paint();
             textPaintGraphics.setColor(Color.WHITE);
             textPaintGraphics.setStyle(Paint.Style.FILL);
-            textPaintGraphics.setTextSize(TIME_FONTSIZE);
+            textPaintGraphics.setTextSize(TIME_FONT_SIZE);
             textPaintGraphics.setTextAlign(Paint.Align.CENTER);
 
             Typeface bold = getResources().getFont(R.font.poppins_bold);
@@ -84,7 +80,7 @@ public class LiveWallpaperService extends WallpaperService {
         public void onVisibilityChanged(boolean visible) {
             mVisible = visible;
             if (visible) {
-                drawFrame();
+                mHandler.post(mDrawThread);
             } else {
                 mHandler.removeCallbacks(mDrawThread);
             }
@@ -165,8 +161,8 @@ public class LiveWallpaperService extends WallpaperService {
 
                     int textHeightOffset = 400;
 
-                    c.drawText(hh, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - textHeightOffset, textPaintGraphics);
-                    c.drawText(mm, SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2 - textHeightOffset + TIME_FONTSIZE, textPaintGraphics);
+                    c.drawText(hh, SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - textHeightOffset, textPaintGraphics);
+                    c.drawText(mm, SCREEN_WIDTH / 2.0f, SCREEN_HEIGHT / 2.0f - textHeightOffset + TIME_FONT_SIZE, textPaintGraphics);
 
                     Log.d("TIME", hh + ":" + mm);
 
