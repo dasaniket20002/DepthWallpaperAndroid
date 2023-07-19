@@ -7,11 +7,17 @@
     android:gravity="center"
     tools:context="com.dasaniket20002.main.MainActivity">
 
+    <ImageView
+        android:id="@+id/wallpaper_IV"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:contentDescription="Wallpaper Preview" />
+
     <Button
-        android:id="@+id/set_wallpaper"
+        android:id="@+id/setWallpaper_BTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Set Wallpaper"
-        android:padding="15dp"/>
+        android:padding="15dp"
+        android:text="Set Wallpaper" />
 
 </RelativeLayout>

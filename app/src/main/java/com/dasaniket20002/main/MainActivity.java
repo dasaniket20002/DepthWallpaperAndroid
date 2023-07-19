@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        setWallpaperButton = findViewById(R.id.set_wallpaper);
+        setWallpaperButton = findViewById(R.id.setWallpaper_BTN);
         setWallpaperButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
