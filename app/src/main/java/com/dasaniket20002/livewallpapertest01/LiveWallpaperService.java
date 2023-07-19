@@ -1,29 +1,34 @@
 package com.dasaniket20002.livewallpapertest01;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.service.wallpaper.WallpaperService;
 import android.text.format.DateUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
+
+import com.dasaniket20002.main.MainActivity;
 
 import java.util.Calendar;
 
 public class LiveWallpaperService extends WallpaperService {
     private static int SCREEN_WIDTH, SCREEN_HEIGHT;
     private static final int TIME_FONT_SIZE = 230;
-
     private static final int TEXT_HEIGHT_OFFSET = 440;
     private Bitmap bgBitmap = null;
     private Bitmap fgBitmap = null;
@@ -58,11 +63,18 @@ public class LiveWallpaperService extends WallpaperService {
             Typeface bold = getResources().getFont(R.font.poppins_bold);
             textPaintGraphics.setTypeface(bold);
 
-            DisplayMetrics metrics = new DisplayMetrics();
-            ((WindowManager) getSystemService(Context.WINDOW_SERVICE))
-                    .getDefaultDisplay().getMetrics(metrics);
-            SCREEN_HEIGHT = metrics.heightPixels;
-            SCREEN_WIDTH = metrics.widthPixels;
+            WindowManager windowManager =
+                    (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);
+            final Display display = windowManager.getDefaultDisplay();
+            Point outPoint = new Point();
+            display.getRealSize(outPoint);
+            if (outPoint.y > outPoint.x) {
+                SCREEN_HEIGHT = outPoint.y;
+                SCREEN_WIDTH = outPoint.x;
+            } else {
+                SCREEN_HEIGHT = outPoint.x;
+                SCREEN_WIDTH = outPoint.y;
+            }
 
             setSceneBackground();
         }
@@ -170,8 +182,6 @@ public class LiveWallpaperService extends WallpaperService {
                     Log.d("TIME", hh + ":" + mm);
 
                     c.drawBitmap(fgBitmap, 0f, 0f, null);
-
-                    //TODO: Draw here
                 }
             } finally {
                 if (c != null) holder.unlockCanvasAndPost(c);
