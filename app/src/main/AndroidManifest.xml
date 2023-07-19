@@ -19,7 +19,7 @@
 
         <activity
             android:name="com.dasaniket20002.main.MainActivity"
-            android:theme="@style/Theme.AppCompat"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,7 +28,7 @@
         </activity>
 
         <service
-            android:name="com.dasaniket20002.livewallpapertest01.LiveWallpaperService"
+            android:name="com.dasaniket20002.main.LiveWallpaperService"
             android:enabled="true"
             android:exported="true"
             android:permission="android.permission.BIND_WALLPAPER">

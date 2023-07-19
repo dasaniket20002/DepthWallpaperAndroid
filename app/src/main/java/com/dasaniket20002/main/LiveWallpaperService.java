@@ -1,33 +1,24 @@
-package com.dasaniket20002.livewallpapertest01;
+package com.dasaniket20002.main;
 
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Point;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.service.wallpaper.WallpaperService;
 import android.text.format.DateUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
 import android.view.SurfaceHolder;
-import android.view.WindowManager;
 
-import androidx.annotation.NonNull;
-
-import com.dasaniket20002.main.MainActivity;
+import com.dasaniket20002.livewallpapertest01.R;
+import com.dasaniket20002.utils.BitmapUtils;
+import com.dasaniket20002.utils.ScreenUtils;
 
 import java.util.Calendar;
-@Deprecated
 public class LiveWallpaperService extends WallpaperService {
-    private static int SCREEN_WIDTH, SCREEN_HEIGHT;
     private static final int TIME_FONT_SIZE = 230;
     private static final int TEXT_HEIGHT_OFFSET = 440;
     private Bitmap bgBitmap = null;
@@ -62,19 +53,6 @@ public class LiveWallpaperService extends WallpaperService {
 
             Typeface bold = getResources().getFont(R.font.poppins_bold);
             textPaintGraphics.setTypeface(bold);
-
-            WindowManager windowManager =
-                    (WindowManager) getApplication().getSystemService(Context.WINDOW_SERVICE);
-            final Display display = windowManager.getDefaultDisplay();
-            Point outPoint = new Point();
-            display.getRealSize(outPoint);
-            if (outPoint.y > outPoint.x) {
-                SCREEN_HEIGHT = outPoint.y;
-                SCREEN_WIDTH = outPoint.x;
-            } else {
-                SCREEN_HEIGHT = outPoint.x;
-                SCREEN_WIDTH = outPoint.y;
-            }
 
             setSceneBackground();
         }
@@ -133,29 +111,15 @@ public class LiveWallpaperService extends WallpaperService {
 
             Bitmap originalMap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.bg);
-            bgBitmap = getScreenSizeBitmap(originalMap);
+            bgBitmap = BitmapUtils.getScreenSizeBitmap(originalMap);
 
             originalMap.recycle();
 
             originalMap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.fg);
-            fgBitmap = getScreenSizeBitmap(originalMap);
+            fgBitmap = BitmapUtils.getScreenSizeBitmap(originalMap);
 
             originalMap.recycle();
-        }
-
-        private Bitmap getScreenSizeBitmap(@NonNull Bitmap originalMap) {
-            int outHeight = SCREEN_HEIGHT;
-            int outWidth = (originalMap.getWidth() * SCREEN_HEIGHT) / originalMap.getHeight();
-
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(originalMap, outWidth, outHeight, false);
-
-            int overflowWidth = outWidth - SCREEN_WIDTH;
-
-            Bitmap returnImg = Bitmap.createBitmap(resizedBitmap, overflowWidth / 2, 0, outWidth - overflowWidth / 2, outHeight);
-
-            resizedBitmap.recycle();
-            return returnImg;
         }
 
         void drawFrame() {
@@ -173,8 +137,8 @@ public class LiveWallpaperService extends WallpaperService {
                     String hh = String.format("%02d", h);
                     String mm = String.format("%02d", m);
 
-                    float drawX = SCREEN_WIDTH / 2.0f;
-                    float drawY = SCREEN_HEIGHT / 2.0f - TEXT_HEIGHT_OFFSET;
+                    float drawX = ScreenUtils.getScreenWidth() / 2.0f;
+                    float drawY = ScreenUtils.getScreenHeight() / 2.0f - TEXT_HEIGHT_OFFSET;
 
                     c.drawText(hh, drawX, drawY, textPaintGraphics);
                     c.drawText(mm, drawX, drawY + TIME_FONT_SIZE, textPaintGraphics);

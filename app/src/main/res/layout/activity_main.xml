@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context="com.dasaniket20002.main.MainActivity">
 
     <ImageView
-        android:id="@+id/wallpaper_IV"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:contentDescription="Wallpaper Preview" />
+        android:id="@+id/Wallpaper_IV"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:contentDescription="bg"
+        app:srcCompat="@drawable/bg" />
 
     <Button
         android:id="@+id/setWallpaper_BTN"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="15dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="24dp"
+        android:layout_weight="0"
         android:text="Set Wallpaper" />
 
-</RelativeLayout>
+</LinearLayout>
