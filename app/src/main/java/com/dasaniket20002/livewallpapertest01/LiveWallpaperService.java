@@ -1,7 +1,6 @@
 package com.dasaniket20002.livewallpapertest01;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -9,12 +8,10 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.graphics.Typeface;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.service.wallpaper.WallpaperService;
 import android.text.format.DateUtils;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
 import android.view.SurfaceHolder;
@@ -22,7 +19,7 @@ import android.view.WindowManager;
 
 import androidx.annotation.NonNull;
 
-import com.dasaniket20002.main.MainActivity;
+import com.dasaniket20002.main.R;
 
 import java.util.Calendar;
 @Deprecated

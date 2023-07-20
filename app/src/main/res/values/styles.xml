@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="all_corners_rounded">
+        <item name="cornerSize">20dp</item>
+    </style>
+</resources>

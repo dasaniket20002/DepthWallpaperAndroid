@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.dasaniket20002.livewallpapertest01'
+    namespace 'com.dasaniket20002.main'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.dasaniket20002.livewallpapertest01"
+        applicationId "com.dasaniket20002.main"
         minSdk 29
         targetSdk 33
         versionCode 1

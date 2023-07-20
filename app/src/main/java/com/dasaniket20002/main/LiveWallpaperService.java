@@ -13,7 +13,6 @@ import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.SurfaceHolder;
 
-import com.dasaniket20002.livewallpapertest01.R;
 import com.dasaniket20002.utils.BitmapUtils;
 import com.dasaniket20002.utils.ScreenUtils;
 
@@ -106,8 +105,10 @@ public class LiveWallpaperService extends WallpaperService {
         }
 
         private void setSceneBackground() {
-            if (null != bgBitmap)
+            if (bgBitmap != null)
                 bgBitmap.recycle();
+            if(fgBitmap != null)
+                fgBitmap.recycle();
 
             Bitmap originalMap = BitmapFactory.decodeResource(getResources(),
                     R.drawable.bg);

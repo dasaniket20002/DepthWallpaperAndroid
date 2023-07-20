@@ -8,21 +8,126 @@
     android:orientation="vertical"
     tools:context="com.dasaniket20002.main.MainActivity">
 
-    <ImageView
-        android:id="@+id/Wallpaper_IV"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:contentDescription="bg"
-        app:srcCompat="@drawable/bg" />
-
-    <Button
-        android:id="@+id/setWallpaper_BTN"
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/wallpaper_IV"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
-        android:layout_marginBottom="24dp"
-        android:layout_weight="0"
-        android:text="Set Wallpaper" />
+        android:contentDescription="bg"
+
+        android:scaleType="centerCrop"
+
+        app:shapeAppearance="@style/all_corners_rounded"
+        app:strokeColor="@color/cardview_dark_background"
+        app:strokeWidth="2dp"
+        />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/setWallpaper_BTN"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:text="Set Wallpaper" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:layout_weight="0" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:text="Adjust Clock Location"
+                android:textAlignment="center"
+                android:gravity="center"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="X-Ray"
+                    android:textAlignment="center"
+                    android:gravity="center"/>
+                <CheckBox
+                    android:id="@+id/enableXRay_CHK"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_weight="0"
+            android:layout_marginHorizontal="5dp"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Offset X (%)" />
+
+                <EditText
+                    android:id="@+id/offsetX_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:text="0"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="2dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:text="Offset Y (%)" />
+
+                <EditText
+                    android:id="@+id/offsetY_ET"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ems="5"
+                    android:inputType="numberDecimal|numberSigned"
+                    android:text="0"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </LinearLayout>
