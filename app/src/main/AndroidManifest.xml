@@ -5,6 +5,7 @@
     <uses-feature
         android:name="android.software.live_wallpaper"
         android:required="true" />
+    <uses-feature android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"

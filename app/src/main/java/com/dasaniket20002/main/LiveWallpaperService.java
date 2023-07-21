@@ -1,7 +1,5 @@
 package com.dasaniket20002.main;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -10,18 +8,13 @@ import android.os.Handler;
 import android.os.Looper;
 import android.service.wallpaper.WallpaperService;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.SurfaceHolder;
 
-import com.dasaniket20002.utils.BitmapUtils;
 import com.dasaniket20002.utils.ScreenUtils;
+import com.dasaniket20002.utils.WallpaperDataHolder;
 
 import java.util.Calendar;
 public class LiveWallpaperService extends WallpaperService {
-    private static final int TIME_FONT_SIZE = 230;
-    private static final int TEXT_HEIGHT_OFFSET = 440;
-    private Bitmap bgBitmap = null;
-    private Bitmap fgBitmap = null;
     @Override
     public void onCreate() {
         super.onCreate();
@@ -34,12 +27,13 @@ public class LiveWallpaperService extends WallpaperService {
 
     @Override
     public void onDestroy() {
+        WallpaperDataHolder.getInstance().onDestroy();
         super.onDestroy();
     }
 
     class MyEngine extends Engine {
         private final Handler mHandler = new Handler(Looper.getMainLooper());
-        private final Runnable mDrawThread = () -> drawFrame();
+        private final Runnable mDrawThread = this::drawFrame;
         private boolean mVisible;
         private final Paint textPaintGraphics;
 
@@ -47,13 +41,11 @@ public class LiveWallpaperService extends WallpaperService {
             textPaintGraphics = new Paint();
             textPaintGraphics.setColor(Color.WHITE);
             textPaintGraphics.setStyle(Paint.Style.FILL);
-            textPaintGraphics.setTextSize(TIME_FONT_SIZE);
+            textPaintGraphics.setTextSize(WallpaperDataHolder.FONT_SIZE);
             textPaintGraphics.setTextAlign(Paint.Align.CENTER);
 
             Typeface bold = getResources().getFont(R.font.poppins_bold);
             textPaintGraphics.setTypeface(bold);
-
-            setSceneBackground();
         }
 
         @Override
@@ -104,58 +96,45 @@ public class LiveWallpaperService extends WallpaperService {
             drawFrame();
         }
 
-        private void setSceneBackground() {
-            if (bgBitmap != null)
-                bgBitmap.recycle();
-            if(fgBitmap != null)
-                fgBitmap.recycle();
-
-            Bitmap originalMap = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.bg);
-            bgBitmap = BitmapUtils.getScreenSizeBitmap(originalMap);
-
-            originalMap.recycle();
-
-            originalMap = BitmapFactory.decodeResource(getResources(),
-                    R.drawable.fg);
-            fgBitmap = BitmapUtils.getScreenSizeBitmap(originalMap);
-
-            originalMap.recycle();
-        }
-
         void drawFrame() {
             final SurfaceHolder holder = getSurfaceHolder();
-            Canvas c = null;
+            Canvas canvas = null;
 
             try {
-                c = holder.lockCanvas();
-                if (c != null) {
-                    c.drawBitmap(bgBitmap, 0f, 0f, null);
-
-                    int h = Calendar.getInstance().get(Calendar.HOUR);
-                    int m = Calendar.getInstance().get(Calendar.MINUTE);
-
-                    String hh = String.format("%02d", h);
-                    String mm = String.format("%02d", m);
-
-                    float drawX = ScreenUtils.getScreenWidth() / 2.0f;
-                    float drawY = ScreenUtils.getScreenHeight() / 2.0f - TEXT_HEIGHT_OFFSET;
-
-                    c.drawText(hh, drawX, drawY, textPaintGraphics);
-                    c.drawText(mm, drawX, drawY + TIME_FONT_SIZE, textPaintGraphics);
-
-                    Log.d("TIME", hh + ":" + mm);
-
-                    c.drawBitmap(fgBitmap, 0f, 0f, null);
+                canvas = holder.lockCanvas();
+                if (canvas != null) {
+                    canvas.drawBitmap(WallpaperDataHolder.getInstance().getBG(), 0f, 0f, null);
+                    drawClock(canvas);
+                    canvas.drawBitmap(WallpaperDataHolder.getInstance().getFG(), 0f, 0f, null);
                 }
             } finally {
-                if (c != null) holder.unlockCanvasAndPost(c);
+                if (canvas != null) holder.unlockCanvasAndPost(canvas);
             }
 
             mHandler.removeCallbacks(mDrawThread);
             if (mVisible) {
                 mHandler.postDelayed(mDrawThread, DateUtils.MINUTE_IN_MILLIS - System.currentTimeMillis() % DateUtils.MINUTE_IN_MILLIS);
             }
+        }
+
+        private void drawClock(Canvas canvas) {
+            int width = ScreenUtils.getScreenWidth();
+            int height = ScreenUtils.getScreenHeight();
+
+            float displacementX = WallpaperDataHolder.getInstance().getClockOffsetX() / 100.0f * width;
+            float displacementY = WallpaperDataHolder.getInstance().getClockOffsetY() / 100.0f * height;
+
+            int drawX = Math.round(width / 2.0f + displacementX / 2.0f);
+            int drawY = Math.round(height / 2.0f + displacementY / 2.0f);
+
+            int h = Calendar.getInstance().get(Calendar.HOUR);
+            int m = Calendar.getInstance().get(Calendar.MINUTE);
+
+            String hh = String.format("%02d", h);
+            String mm = String.format("%02d", m);
+
+            canvas.drawText(hh, drawX, drawY, textPaintGraphics);
+            canvas.drawText(mm, drawX, drawY + WallpaperDataHolder.FONT_SIZE, textPaintGraphics);
         }
     }
 }
