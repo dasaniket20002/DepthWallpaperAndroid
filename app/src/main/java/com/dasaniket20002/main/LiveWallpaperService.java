@@ -27,7 +27,6 @@ public class LiveWallpaperService extends WallpaperService {
 
     @Override
     public void onDestroy() {
-        WallpaperDataHolder.getInstance().onDestroy();
         super.onDestroy();
     }
 

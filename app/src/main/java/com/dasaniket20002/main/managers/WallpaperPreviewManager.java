@@ -19,7 +19,7 @@ import com.google.android.material.imageview.ShapeableImageView;
 public class WallpaperPreviewManager {
 
     private static final String HH = "01", MM = "45";
-    private static final float SCALE_FACTOR = 0.6f;
+    private static final float SCALE_FACTOR = 0.7f;
     private int widthIV, heightIV;
     private final MainActivity activity;
     private final ShapeableImageView wallpaper_IV;
@@ -59,11 +59,10 @@ public class WallpaperPreviewManager {
         if(fg != null) fg.recycle();
 
         bg = BitmapUtils.getScaledBitmap(
-                WallpaperDataHolder.getInstance().getBG(),
-                widthIV, heightIV);
+                WallpaperDataHolder.getInstance().getBG(), SCALE_FACTOR);
         fg = BitmapUtils.getScaledBitmap(
-                WallpaperDataHolder.getInstance().getFG(),
-                widthIV, heightIV);
+                WallpaperDataHolder.getInstance().getFG(), SCALE_FACTOR);
+
     }
 
     public void redraw() {

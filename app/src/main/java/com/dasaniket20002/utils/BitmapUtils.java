@@ -22,4 +22,11 @@ public class BitmapUtils {
         return returnImg;
     }
 
+    public static Bitmap getScaledBitmap(Bitmap originalMap, float scale_factor) {
+        int width = Math.round(originalMap.getWidth() * scale_factor);
+        int height = Math.round(originalMap.getHeight() * scale_factor);
+
+        return getScaledBitmap(originalMap, width, height);
+    }
+
 }
